@@ -2,39 +2,41 @@
 
 BuzZapp is a modern food delivery iOS application built with SwiftUI.
 
-It includes restaurant discovery, food browsing, search, cart management, checkout, order history, festival-based recommendations and API-driven data.
+It includes restaurant discovery, food browsing, search, cart management, checkout, order history and festival-based recommendations.
 
 ## 📱 Screenshots
 
-### Home & Discovery
+<table>
+<tr>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.31.16.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.35.51.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.17.png" width="180"></td>
+</tr>
 
-![Home](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.31.16.png)
+<tr>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.25.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.56.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.37.16.png" width="180"></td>
+</tr>
 
-![Home](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.35.51.png)
+<tr>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.19.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.23.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.27.png" width="180"></td>
+</tr>
 
-### Restaurant & Food
+<tr>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.53.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.39.28.png" width="180"></td>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.41.22.png" width="180"></td>
+</tr>
 
-![Restaurant](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.17.png)
-
-![Food](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.25.png)
-
-### Search & Categories
-
-![Search](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.36.56.png)
-
-![Categories](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.37.16.png)
-
-### Cart & Checkout
-
-![Cart](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.19.png)
-
-![Checkout](BuzZapp/Screenshots/Simulator%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.23.png)
-
-### Profile & Orders
-
-![Profile](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.27.png)
-
-![Orders](BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.38.53.png)
+<tr>
+<td><img src="BuzZapp/Screenshots/Simulator%20Screenshot%20-%20iPhone%2017%20Pro%20-%202026-09-30%20at%2013.41.27.png" width="180"></td>
+<td></td>
+<td></td>
+</tr>
+</table>
 
 ## ✨ Features
 
@@ -42,15 +44,14 @@ It includes restaurant discovery, food browsing, search, cart management, checko
 - Food category browsing
 - Search for restaurants and food
 - Restaurant detail and menu
-- Add/remove food items from cart
+- Add and remove food items from cart
 - Quantity management
 - Checkout flow
 - Order history
 - User profile
-- Festival-based food recommendations
-- Dynamic API data
+- Festival-based recommendations
+- REST API integration
 - Local food and restaurant images
-- Responsive SwiftUI interface
 
 ## 🛠 Tech Stack
 
@@ -60,19 +61,19 @@ It includes restaurant discovery, food browsing, search, cart management, checko
 - Async/Await
 - URLSession
 - REST API
-- JSON / Codable
+- Codable
 - Xcode
 - Git & GitHub
 
 ## 🌐 API Integration
 
-BuzZapp fetches restaurant, food, category, order, user and festival data from REST APIs using `URLSession` and Swift Concurrency.
+BuzZapp fetches restaurant, food, category, order, user and festival data using REST APIs with URLSession and Swift Concurrency.
 
-The app also integrates festival data to identify the current festival and show relevant restaurant recommendations.
+Festival data is also used to identify the current festival and show relevant restaurant recommendations.
 
 ## 🧠 Recommendation System
 
-Restaurants are scored using factors such as:
+Restaurants are scored using:
 
 - Rating
 - Popularity

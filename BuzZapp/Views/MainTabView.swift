@@ -53,6 +53,13 @@ struct MainTabView: View {
                 .tag(3)
         }
         .tint(.red)
+        .onReceive(
+            NotificationCenter.default.publisher(
+                for: .openCart
+            )
+        ) { _ in
+            selectedTab = 2
+        }
         .task {
             await loadData()
         }
@@ -67,10 +74,15 @@ struct MainTabView: View {
             
             print("Restaurants: \(restaurants.count)")
             print("Food items: \(foodItems.count)")
+            
         } catch {
             print("Main data error: \(error)")
         }
     }
+}
+
+extension Notification.Name {
+    static let openCart = Notification.Name("openCart")
 }
 
 #Preview {

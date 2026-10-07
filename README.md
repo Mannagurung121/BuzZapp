@@ -2,7 +2,9 @@
 
 BuzZapp is a modern food delivery iOS application built with SwiftUI.
 
-It includes restaurant discovery, food browsing, search, cart management, checkout, order history and festival-based recommendations.
+The app focuses on a complete food ordering experience with restaurant discovery, food browsing, search, cart management, checkout, order history and festival-based recommendations.
+
+The project also explores modern Apple platform technologies such as SwiftData and App Intents, including Siri integration inspired by the latest developer technologies introduced at WWDC26.
 
 ## 📱 Screenshots
 
@@ -43,56 +45,48 @@ It includes restaurant discovery, food browsing, search, cart management, checko
 - Restaurant discovery
 - Food category browsing
 - Search for restaurants and food
-- Restaurant detail and menu
+- Restaurant details and menu
 - Add and remove food items from cart
 - Quantity management
+- Local cart persistence using SwiftData
 - Checkout flow
 - Order history
 - User profile
 - Festival-based recommendations
 - REST API integration
 - Local food and restaurant images
+- Siri integration using App Intents
+- Open BuzZapp using Siri
+- Check cart contents using Siri
+- Siri response with product names, quantities and total amount
 
-## 🛠 Tech Stack
+## 🗣️ Siri & App Intents
 
-- Swift
-- SwiftUI
-- MVVM
-- Async/Await
-- URLSession
-- REST API
-- Codable
-- Xcode
-- Git & GitHub
+BuzZapp uses Apple's App Intents framework to expose app actions to Siri and make common app interactions accessible through voice commands.
 
-## 🌐 API Integration
+The integration was built while exploring the latest Apple platform direction around App Intents and Siri introduced at WWDC26.
 
-BuzZapp fetches restaurant, food, category, order, user and festival data using REST APIs with URLSession and Swift Concurrency.
+Currently supported:
 
-Festival data is also used to identify the current festival and show relevant restaurant recommendations.
+- Open BuzZapp using Siri
+- Show the current cart using Siri
+- Read product names and quantities
+- Calculate and read the cart total
 
-## 🧠 Recommendation System
+Example:
 
-Restaurants are scored using:
+> "Show my cart in BuzZapp"
 
-- Rating
-- Popularity
-- Distance
-- Festival relevance
+Siri responds with the products, quantities and total amount in the cart.
 
-The highest-scoring restaurants are shown as recommendations.
+The App Intents layer is designed so that more food ordering actions can be exposed through Siri as the project evolves.
 
-## 🏗 Architecture
+## 💾 SwiftData Cart Persistence
 
-The project follows an MVVM-based structure:
+BuzZapp uses SwiftData to persist the local cart.
+
+The cart stores only the information required to maintain the user's selections:
 
 ```text
-BuzZapp
-├── App
-├── Models
-├── Services
-├── ViewModels
-├── Views
-├── Components
-├── Algorithms
-└── Resources
+foodID
+quantity

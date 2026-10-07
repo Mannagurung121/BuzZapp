@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct CartView: View {
     
@@ -40,7 +41,6 @@ struct CartView: View {
     private func cartItem(_ item: FoodItem) -> some View {
         HStack(spacing: 12) {
             
-            // MARK: - Local Image
             Image(item.imageName)
                 .resizable()
                 .scaledToFill()
@@ -168,5 +168,9 @@ struct CartView: View {
 #Preview {
     CartView(
         cartViewModel: CartViewModel()
+    )
+    .modelContainer(
+        for: CartItemModel.self,
+        inMemory: true
     )
 }

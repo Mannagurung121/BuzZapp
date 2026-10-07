@@ -1,9 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     
     @StateObject private var viewModel = HomeViewModel()
     @EnvironmentObject var cartViewModel: CartViewModel
+    @Environment(\.modelContext) private var context
     
     @State private var selectedCategory = "All"
     @State private var showAddedCart = false
@@ -23,7 +25,6 @@ struct HomeView: View {
                         
                         SearchBar()
                         
-                        // Festival banner only when there is a festival today
                         if let festival = viewModel.festival {
                             festivalBanner(festival)
                         }
@@ -40,7 +41,6 @@ struct HomeView: View {
                             categoryFoodSection
                         }
                         
-                        // Festival recommendations or normal recommendations
                         if let festival = viewModel.festival {
                             festivalPicksSection(festival)
                         } else {
@@ -69,9 +69,16 @@ struct HomeView: View {
             }
             .background(Color(.systemGroupedBackground))
             .task {
+                
                 if viewModel.restaurants.isEmpty {
                     await viewModel.loadHomeData()
                 }
+                
+                cartViewModel.setup(context: context)
+                
+                cartViewModel.loadCart(
+                    foodItems: viewModel.foodItems
+                )
             }
         }
     }
@@ -794,4 +801,8 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environmentObject(CartViewModel())
+        .modelContainer(
+            for: CartItemModel.self,
+            inMemory: true
+        )
 }

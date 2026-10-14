@@ -3,68 +3,63 @@ import AppIntents
 import SwiftData
 
 struct ShowCartIntent: AppIntent {
-    
+
     static var title: LocalizedStringResource = "Show My Cart"
-    
+
     static var description = IntentDescription(
-        "Shows the items currently in your BuzZapp cart."
+        "Tells you the items and total in your BuzZapp cart."
     )
-    
-    static var openAppWhenRun: Bool = true
-    
+
+    static let supportedModes: IntentModes = [
+        .background
+    ]
+
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        
-        let container = try ModelContainer(
-            for: CartItemModel.self
+
+        let context = await ModelContext(
+            CartPersistence.container
         )
-        
-        let context = ModelContext(container)
-        
+
         let cartItems = try context.fetch(
             FetchDescriptor<CartItemModel>()
         )
-        
+
         if cartItems.isEmpty {
-            
-            await NotificationCenter.default.post(
-                name: .openCart,
-                object: nil
-            )
-            
             return .result(
                 dialog: "Your cart is empty."
             )
         }
-        
-        // Get food details from API
+
         let data = try await APIService.shared.fetchData()
-        
+
+        let foodByID = Dictionary(
+            uniqueKeysWithValues: data.foodItems.map {
+                ($0.id, $0)
+            }
+        )
+
         var itemsText: [String] = []
         var totalAmount = 0
-        
+        var totalItemCount = 0
+
         for cartItem in cartItems {
-            
-            if let food = data.foodItems.first(where: {
-                $0.id == cartItem.foodID
-            }) {
-                
-                itemsText.append(
-                    "\(cartItem.quantity) \(food.name)"
-                )
-                
-                totalAmount += (
-                    food.price * cartItem.quantity
-                )
+
+            guard let food = foodByID[cartItem.foodID] else {
+                continue
             }
+
+            itemsText.append(
+                "\(cartItem.quantity) \(food.name)"
+            )
+
+            totalAmount += food.price * cartItem.quantity
+            totalItemCount += cartItem.quantity
         }
-        
-        await NotificationCenter.default.post(
-            name: .openCart,
-            object: nil
-        )
-        
-        let totalItemCount = cartItems.reduce(0) {
-            $0 + $1.quantity
+
+        if itemsText.isEmpty {
+            return .result(
+                dialog: "I couldn't find the food details for your cart."
+            )
         }
 
         let cartText = itemsText.joined(

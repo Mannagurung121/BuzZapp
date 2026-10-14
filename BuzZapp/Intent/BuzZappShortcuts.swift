@@ -24,5 +24,13 @@ struct BuzZappShortcuts: AppShortcutsProvider {
             shortTitle: "Show My Cart",
             systemImageName: "cart"
         )
+        AppShortcut(
+            intent: OpenCartIntent(),
+            phrases: [
+                "Open my cart in \(.applicationName)"
+            ],
+            shortTitle: "Open My Cart",
+            systemImageName: "cart.fill"
+        )
     }
 }

@@ -2,119 +2,120 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    
+
     @StateObject private var viewModel = HomeViewModel()
     @EnvironmentObject var cartViewModel: CartViewModel
     @Environment(\.modelContext) private var context
-    
+
     @State private var selectedCategory = "All"
     @State private var showAddedCart = false
-    
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                
+
                 ScrollView {
                     LazyVStack(
                         alignment: .leading,
                         spacing: 24,
                         pinnedViews: [.sectionHeaders]
                     ) {
-                        
+
                         locationHeader
-                        
+
                         SearchBar()
-                        
+
                         if let festival = viewModel.festival {
                             festivalBanner(festival)
                         }
-                        
+
                         categoriesSection
-                        
+
                         Section {
                             chatpataFoodCards
                         } header: {
                             chatpataHeader
                         }
-                        
+
                         if selectedCategory != "All" {
                             categoryFoodSection
                         }
-                        
+
                         if let festival = viewModel.festival {
                             festivalPicksSection(festival)
                         } else {
                             topPicksSection
                         }
-                        
+
                         hotMealsSection
-                        
+
                         cheesySection
-                        
+
                         midnightMoodSection
-                        
+
                         mostLovedSection
                     }
                     .padding(.vertical)
                     .padding(.bottom, 70)
                 }
-                
+
                 if showAddedCart && cartViewModel.totalItems > 0 {
                     addedCartView
                         .transition(
                             .move(edge: .bottom)
-                            .combined(with: .opacity)
+                                .combined(with: .opacity)
                         )
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color(uiColor: .systemGroupedBackground))
             .task {
-                
+
                 if viewModel.restaurants.isEmpty {
                     await viewModel.loadHomeData()
                 }
-                
+
                 cartViewModel.setup(context: context)
-                
+
                 cartViewModel.loadCart(
                     foodItems: viewModel.foodItems
                 )
             }
         }
     }
-    
+
     // MARK: - Location
-    
+
     private var locationHeader: some View {
         HStack(spacing: 10) {
-            
+
             Image(systemName: "location.fill")
                 .foregroundStyle(.red)
-            
+
             VStack(alignment: .leading, spacing: 2) {
-                
+
                 Text("Delivering to")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 Text("Haldwani")
                     .font(.headline)
+                    .foregroundStyle(.primary)
             }
-            
+
             Spacer()
-            
+
             Image(systemName: "chevron.down")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
         .padding(.horizontal)
     }
-    
+
     // MARK: - Festival
-    
+
     private func festivalBanner(_ festival: Festival) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             Image(
                 LocalImageService.festivalImage(
                     for: festival
@@ -126,21 +127,22 @@ struct HomeView: View {
             .clipShape(
                 RoundedRectangle(cornerRadius: 16)
             )
-            
+
             HStack {
-                
+
                 VStack(alignment: .leading, spacing: 5) {
-                    
+
                     Text(festival.title)
                         .font(.title3.bold())
-                    
+                        .foregroundStyle(.primary)
+
                     Text(festival.subtitle)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 Image(systemName: "sparkles")
                     .font(.title2)
                     .foregroundStyle(.orange)
@@ -154,22 +156,23 @@ struct HomeView: View {
         )
         .padding(.horizontal)
     }
-    
+
     // MARK: - Categories
-    
+
     private var categoriesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             Text("What are you craving?")
                 .font(.title3.bold())
+                .foregroundStyle(.primary)
                 .padding(.horizontal)
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
-                
+
                 HStack(spacing: 12) {
-                    
+
                     ForEach(viewModel.categories) { category in
-                        
+
                         CategoryView(
                             category: category,
                             isSelected: selectedCategory == category.name
@@ -184,15 +187,16 @@ struct HomeView: View {
             }
         }
     }
-    
+
     // MARK: - Chatpata
-    
+
     private var chatpataHeader: some View {
         VStack(alignment: .leading, spacing: 3) {
-            
+
             Text("Chatpata Brunch for chatpati ladki 🌶️")
                 .font(.headline)
-            
+                .foregroundStyle(.primary)
+
             Text("Thoda spicy, thoda naughty.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -200,14 +204,14 @@ struct HomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
         .padding(.vertical, 8)
-        .background(Color(.systemGroupedBackground))
+        .background(Color(uiColor: .systemGroupedBackground))
     }
-    
+
     private var chatpataFoodCards: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            
+
             HStack(spacing: 14) {
-                
+
                 ForEach(chatpataFoods.prefix(10)) { food in
                     foodCarouselCard(food)
                 }
@@ -215,35 +219,36 @@ struct HomeView: View {
             .padding(.horizontal)
         }
     }
-    
+
     private var chatpataFoods: [FoodItem] {
-        
+
         viewModel.foodItems.filter { food in
-            
+
             let tags = food.foodTags.map {
                 $0.lowercased()
             }
-            
+
             return tags.contains("street_food") ||
                    tags.contains("kebab") ||
                    tags.contains("tandoori") ||
                    food.category.lowercased().contains("street")
         }
     }
-    
+
     // MARK: - Category Food
-    
+
     private var categoryFoodSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             Text(selectedCategory)
                 .font(.title3.bold())
+                .foregroundStyle(.primary)
                 .padding(.horizontal)
-            
+
             LazyVStack(spacing: 14) {
-                
+
                 ForEach(filteredCategoryFoods.prefix(8)) { food in
-                    
+
                     FoodCard(
                         food: food,
                         quantity: cartViewModel.quantity(for: food),
@@ -258,56 +263,56 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var filteredCategoryFoods: [FoodItem] {
-        
+
         guard selectedCategory != "All" else {
             return []
         }
-        
+
         return viewModel.foodItems.filter {
             $0.category.localizedCaseInsensitiveCompare(
                 selectedCategory
             ) == .orderedSame
         }
     }
-    
+
     // MARK: - Festival Picks
-    
+
     private func festivalPicksSection(
         _ festival: Festival
     ) -> some View {
-        
+
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "\(festival.name) Special 🪔",
                 subtitle: "Specially recommended for \(festival.name)."
             )
-            
+
             if viewModel.recommendedRestaurants.isEmpty {
-                
+
                 ProgressView()
                     .frame(maxWidth: .infinity)
-                
+
             } else {
-                
+
                 LazyVStack(spacing: 14) {
-                    
+
                     ForEach(
                         viewModel.recommendedRestaurants
                     ) { restaurant in
-                        
+
                         NavigationLink {
-                            
+
                             RestaurantDetailView(
                                 restaurant: restaurant,
                                 foodItems: viewModel.foodItems,
                                 cartViewModel: cartViewModel
                             )
-                            
+
                         } label: {
-                            
+
                             RestaurantCard(
                                 restaurant: restaurant
                             )
@@ -318,40 +323,40 @@ struct HomeView: View {
             }
         }
     }
-    
+
     // MARK: - Top Picks
-    
+
     private var topPicksSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "Top Picks for You",
                 subtitle: "Recommended based on rating, popularity and distance."
             )
-            
+
             if viewModel.recommendedRestaurants.isEmpty {
-                
+
                 ProgressView()
                     .frame(maxWidth: .infinity)
-                
+
             } else {
-                
+
                 LazyVStack(spacing: 14) {
-                    
+
                     ForEach(
                         viewModel.recommendedRestaurants
                     ) { restaurant in
-                        
+
                         NavigationLink {
-                            
+
                             RestaurantDetailView(
                                 restaurant: restaurant,
                                 foodItems: viewModel.foodItems,
                                 cartViewModel: cartViewModel
                             )
-                            
+
                         } label: {
-                            
+
                             RestaurantCard(
                                 restaurant: restaurant
                             )
@@ -362,21 +367,21 @@ struct HomeView: View {
             }
         }
     }
-    
+
     // MARK: - Hot Meals
-    
+
     private var hotMealsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "Hot Meals 🔥",
                 subtitle: "Fresh picks that are worth ordering right now."
             )
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
-                
+
                 HStack(spacing: 14) {
-                    
+
                     ForEach(hotMeals.prefix(10)) { food in
                         foodCarouselCard(food)
                     }
@@ -385,37 +390,37 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var hotMeals: [FoodItem] {
-        
+
         viewModel.foodItems
             .filter {
                 $0.isAvailable
             }
             .sorted {
-                
+
                 if $0.rating == $1.rating {
                     return $0.reviewCount > $1.reviewCount
                 }
-                
+
                 return $0.rating > $1.rating
             }
     }
-    
+
     // MARK: - Cheesy
-    
+
     private var cheesySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "I know you're hot, but this is too cheesy 🧀",
                 subtitle: "Cheese pull dekh ke diet khud resign kar de."
             )
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
-                
+
                 HStack(spacing: 14) {
-                    
+
                     ForEach(cheesyFoods.prefix(10)) { food in
                         foodCarouselCard(food)
                     }
@@ -424,34 +429,34 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var cheesyFoods: [FoodItem] {
-        
+
         viewModel.foodItems.filter { food in
-            
+
             let tags = food.foodTags.map {
                 $0.lowercased()
             }
-            
+
             return tags.contains("pizza") ||
                    food.category.lowercased().contains("pizza")
         }
     }
-    
+
     // MARK: - Midnight
-    
+
     private var midnightMoodSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "Midnight mood, munchies understood 🌙",
                 subtitle: "Neend baad mein. Pehle kuch tasty."
             )
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
-                
+
                 HStack(spacing: 14) {
-                    
+
                     ForEach(midnightFoods.prefix(10)) { food in
                         foodCarouselCard(food)
                     }
@@ -460,15 +465,15 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var midnightFoods: [FoodItem] {
-        
+
         viewModel.foodItems.filter { food in
-            
+
             let tags = food.foodTags.map {
                 $0.lowercased()
             }
-            
+
             return tags.contains("fast_food") ||
                    tags.contains("street_food") ||
                    tags.contains("burger") ||
@@ -476,19 +481,19 @@ struct HomeView: View {
                    tags.contains("cafe")
         }
     }
-    
+
     // MARK: - Most Loved
-    
+
     private var mostLovedSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
+
             sectionTitle(
                 title: "Most Loved by Foodies ❤️",
                 subtitle: "Logon ne order kiya, tum bhi try karo."
             )
-            
+
             LazyVStack(spacing: 12) {
-                
+
                 ForEach(mostLovedFoods.prefix(6)) { food in
                     mostLovedCard(food)
                 }
@@ -496,31 +501,31 @@ struct HomeView: View {
             .padding(.horizontal)
         }
     }
-    
+
     private var mostLovedFoods: [FoodItem] {
-        
+
         viewModel.foodItems
             .filter {
                 $0.isAvailable
             }
             .sorted {
-                
+
                 if $0.reviewCount == $1.reviewCount {
                     return $0.rating > $1.rating
                 }
-                
+
                 return $0.reviewCount > $1.reviewCount
             }
     }
-    
+
     // MARK: - Food Card
-    
+
     private func foodCarouselCard(
         _ food: FoodItem
     ) -> some View {
-        
+
         VStack(alignment: .leading, spacing: 8) {
-            
+
             Image(
                 LocalImageService.foodImage(
                     for: food
@@ -535,23 +540,25 @@ struct HomeView: View {
             .clipShape(
                 RoundedRectangle(cornerRadius: 14)
             )
-            
+
             Text(food.name)
                 .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.primary)
                 .lineLimit(1)
-            
+
             HStack {
-                
+
                 Text("₹\(food.price)")
                     .font(.caption.weight(.semibold))
-                
+                    .foregroundStyle(.primary)
+
                 Spacer()
-                
+
                 HStack(spacing: 3) {
-                    
+
                     Image(systemName: "star.fill")
                         .font(.caption2)
-                    
+
                     Text(
                         String(
                             format: "%.1f",
@@ -562,11 +569,11 @@ struct HomeView: View {
                 }
                 .foregroundStyle(.orange)
             }
-            
+
             Button {
                 addToCart(food)
             } label: {
-                
+
                 Text(
                     cartViewModel.quantity(for: food) == 0
                     ? "ADD TO CART"
@@ -585,7 +592,9 @@ struct HomeView: View {
         }
         .padding(10)
         .frame(width: 190)
-        .background(.white)
+        .background(
+            Color(uiColor: .secondarySystemBackground)
+        )
         .clipShape(
             RoundedRectangle(cornerRadius: 16)
         )
@@ -595,15 +604,15 @@ struct HomeView: View {
             y: 4
         )
     }
-    
+
     // MARK: - Most Loved Card
-    
+
     private func mostLovedCard(
         _ food: FoodItem
     ) -> some View {
-        
+
         HStack(spacing: 12) {
-            
+
             Image(
                 LocalImageService.foodImage(
                     for: food
@@ -618,51 +627,53 @@ struct HomeView: View {
             .clipShape(
                 RoundedRectangle(cornerRadius: 10)
             )
-            
+
             VStack(alignment: .leading, spacing: 4) {
-                
+
                 Text(food.name)
                     .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
                     .lineLimit(1)
-                
+
                 Text(food.category)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
+
                 HStack(spacing: 4) {
-                    
+
                     Image(systemName: "star.fill")
                         .font(.caption2)
-                    
+
                     Text(
                         String(
                             format: "%.1f",
                             food.rating
                         )
                     )
-                    
+
                     Text("•")
-                    
+
                     Text("\(food.reviewCount) reviews")
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
             }
-            
+
             Spacer()
-            
+
             VStack(
                 alignment: .trailing,
                 spacing: 8
             ) {
-                
+
                 Text("₹\(food.price)")
                     .font(.subheadline.weight(.semibold))
-                
+                    .foregroundStyle(.primary)
+
                 Button {
                     addToCart(food)
                 } label: {
-                    
+
                     Text(
                         cartViewModel.quantity(for: food) == 0
                         ? "ADD"
@@ -683,7 +694,9 @@ struct HomeView: View {
             }
         }
         .padding(10)
-        .background(.white)
+        .background(
+            Color(uiColor: .secondarySystemBackground)
+        )
         .clipShape(
             RoundedRectangle(cornerRadius: 14)
         )
@@ -693,37 +706,38 @@ struct HomeView: View {
             y: 3
         )
     }
-    
+
     // MARK: - Section Title
-    
+
     private func sectionTitle(
         title: String,
         subtitle: String
     ) -> some View {
-        
+
         VStack(
             alignment: .leading,
             spacing: 3
         ) {
-            
+
             Text(title)
                 .font(.title3.bold())
-            
+                .foregroundStyle(.primary)
+
             Text(subtitle)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
         .padding(.horizontal)
     }
-    
+
     // MARK: - Cart
-    
+
     private func addToCart(
         _ food: FoodItem
     ) {
-        
+
         cartViewModel.addItem(food)
-        
+
         withAnimation(
             .spring(
                 response: 0.3,
@@ -732,11 +746,11 @@ struct HomeView: View {
         ) {
             showAddedCart = true
         }
-        
+
         DispatchQueue.main.asyncAfter(
             deadline: .now() + 1.5
         ) {
-            
+
             withAnimation(
                 .easeOut(duration: 0.2)
             ) {
@@ -744,46 +758,48 @@ struct HomeView: View {
             }
         }
     }
-    
+
     private var addedCartView: some View {
-        
+
         NavigationLink {
-            
+
             CartView(
                 cartViewModel: cartViewModel
             )
-            
+
         } label: {
-            
+
             HStack(spacing: 8) {
-                
+
                 Image(systemName: "cart.fill")
                     .font(.caption.weight(.semibold))
-                
+
                 Text("Added")
                     .font(.caption.weight(.semibold))
-                
+
                 Text("•")
                     .foregroundStyle(.secondary)
-                
+
                 Text("\(cartViewModel.totalItems)")
                     .font(.caption.weight(.semibold))
-                
+
                 Text("View Cart")
                     .font(.caption.weight(.semibold))
             }
             .foregroundStyle(.primary)
             .padding(.horizontal, 13)
             .frame(height: 38)
-            .background(.background)
+            .background(
+                Color(uiColor: .secondarySystemBackground)
+            )
             .clipShape(
                 RoundedRectangle(cornerRadius: 11)
             )
             .overlay {
-                
+
                 RoundedRectangle(cornerRadius: 11)
                     .stroke(
-                        .gray.opacity(0.15),
+                        Color(uiColor: .separator).opacity(0.3),
                         lineWidth: 1
                     )
             }
@@ -798,11 +814,22 @@ struct HomeView: View {
     }
 }
 
-#Preview {
+#Preview("Home - Light Mode") {
     HomeView()
         .environmentObject(CartViewModel())
         .modelContainer(
             for: CartItemModel.self,
             inMemory: true
         )
+        .preferredColorScheme(.light)
+}
+
+#Preview("Home - Dark Mode") {
+    HomeView()
+        .environmentObject(CartViewModel())
+        .modelContainer(
+            for: CartItemModel.self,
+            inMemory: true
+        )
+        .preferredColorScheme(.dark)
 }

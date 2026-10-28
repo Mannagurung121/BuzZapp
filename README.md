@@ -40,6 +40,34 @@ The project also explores modern Apple platform technologies such as SwiftData a
 </tr>
 </table>
 
+
+## 📱 iPhone Duo Screenshots
+
+The following screenshots showcase BuzZapp running on iPhone Duo.
+
+<table>
+<tr>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/1.png" width="180"><br>Home</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/2.png" width="180"><br>Restaurants</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/3.png" width="180"><br>Food Discovery</td>
+</tr>
+<tr>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/4.png" width="180"><br>Restaurant Details</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/5.png" width="180"><br>Food Menu</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/6.png" width="180"><br>Cart</td>
+</tr>
+<tr>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/7.png" width="180"><br>Checkout</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/8.png" width="180"><br>Orders</td>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/9.png" width="180"><br>Profile</td>
+</tr>
+<tr>
+<td align="center"><img src="BuzZapp/Screenshots/Duo/10.png" width="180"><br>More Features</td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
 ## ✨ Features
 
 - Restaurant discovery

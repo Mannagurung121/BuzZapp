@@ -3,9 +3,10 @@ import Foundation
 import AppIntents
 
 struct BuzZappShortcuts: AppShortcutsProvider {
-    
+
     static var appShortcuts: [AppShortcut] {
-        
+
+        // Open BuzZapp
         AppShortcut(
             intent: OpenBuzZappIntent(),
             phrases: [
@@ -14,7 +15,8 @@ struct BuzZappShortcuts: AppShortcutsProvider {
             shortTitle: "Open BuzZapp",
             systemImageName: "fork.knife"
         )
-        
+
+        // Show Cart
         AppShortcut(
             intent: ShowCartIntent(),
             phrases: [
@@ -24,6 +26,8 @@ struct BuzZappShortcuts: AppShortcutsProvider {
             shortTitle: "Show My Cart",
             systemImageName: "cart"
         )
+
+        // Open Cart
         AppShortcut(
             intent: OpenCartIntent(),
             phrases: [
@@ -31,6 +35,16 @@ struct BuzZappShortcuts: AppShortcutsProvider {
             ],
             shortTitle: "Open My Cart",
             systemImageName: "cart.fill"
+        )
+
+        // Add Food to Cart
+        AppShortcut(
+            intent: AddFoodToCartIntent(),
+            phrases: [
+                "Add food to my cart in \(.applicationName)"
+            ],
+            shortTitle: "Add Food to Cart",
+            systemImageName: "cart.badge.plus"
         )
     }
 }

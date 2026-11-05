@@ -6,7 +6,7 @@ final class APIService {
     
     private init() {}
     
-    let urlString = "https://mocki.io/v1/513bacaa-85c1-4152-93db-c00a7fa0b3d9"
+    let urlString = "https://mocki.io/v1/ba892b12-fbe2-4b9a-a510-cb964e3a4f17"
     
     func fetchData() async throws -> APIResponse {
         
